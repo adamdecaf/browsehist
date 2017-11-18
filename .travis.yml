@@ -1,0 +1,20 @@
+language: go
+
+os:
+  - linux
+  - osx
+
+go:
+  - 1.8
+  - 1.9
+  - master
+
+osx_image: xcode9.1
+
+matrix:
+  allow_failures:
+    - go: master
+  fast_finish: true
+
+script:
+  - make test
