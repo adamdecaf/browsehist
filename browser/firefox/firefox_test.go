@@ -81,5 +81,11 @@ func TestFirefox__readHistoryItems(t *testing.T) {
 	}
 	if len(urls) != 3 || len(whens) != 2 {
 		t.Errorf("got %d of 3 urls, %d of 2 whens", len(urls), len(whens))
+		for k, v := range urls {
+			t.Errorf(" urls: %s, %d", k, v)
+		}
+		for k, v := range whens {
+			t.Errorf(" whens: %s, %d", k, v)
+		}
 	}
 }
