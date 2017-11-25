@@ -1,7 +1,7 @@
 .PHONY: build check
 
 check:
-	go vet ./...
+	go list ./... | xargs -n1 go vet -v
 	go fmt ./...
 
 test: check
