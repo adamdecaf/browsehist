@@ -1,7 +1,7 @@
 .PHONY: build check
 
 check:
-	go list ./... | xargs -n1 go vet -v
+	go list ./... | grep -v vendor | xargs -n1 go vet -v
 	go fmt ./...
 
 test: check
