@@ -77,7 +77,7 @@ func (ff Firefox) parse(where string, when int64) (*browsehist.HistoryItem, erro
 	if err != nil {
 		return nil, err
 	}
-	t := time.Unix(int64(when/1000000), 0) // throw away nsec
+	t := time.Unix(int64(when/1000000), 0).UTC() // throw away nsec
 	return &browsehist.HistoryItem{
 		Address:    *u,
 		AccessTime: t,

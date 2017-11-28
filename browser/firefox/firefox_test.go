@@ -34,7 +34,7 @@ func TestFirefox__parse(t *testing.T) {
 	if item.Address.String() != "https://mozilla.org" {
 		t.Errorf("got: %s", item.Address.String())
 	}
-	if item.AccessTime.String() != "2017-10-29 15:02:31 -0500 CDT" {
+	if item.AccessTime.String() != "2017-10-29 20:02:31 +0000 UTC" {
 		t.Errorf("got: %s", item.AccessTime.String())
 	}
 }
@@ -59,8 +59,8 @@ func TestFirefox__readHistoryItems(t *testing.T) {
 	urls[`https://www.mozilla.org/en-US/privacy/firefox/`] = 0
 
 	whens := make(map[string]int, 0)
-	whens[`2017-11-24 12:52:35 -0600 CST`] = 0
-	whens[`2017-11-24 12:52:36 -0600 CST`] = 0
+	whens[`2017-11-24 18:52:35 +0000 UTC`] = 0
+	whens[`2017-11-24 18:52:36 +0000 UTC`] = 0
 
 	// Mark what we've see
 	for i := range items {
