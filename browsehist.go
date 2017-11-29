@@ -10,6 +10,6 @@ type History struct {
 }
 
 type HistoryItem struct {
-	Address url.URL
+	Address    url.URL
 	AccessTime time.Time
 }
