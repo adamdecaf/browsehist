@@ -6,9 +6,7 @@ import (
 
 func init() {
 	// Sneak in and change where we're searching for places.sqlite files
-	placesFilepaths = []string{
-		"../../testdata/places.sqlite",
-	}
+	placesFilepaths = []string{"testdata/places.sqlite"}
 }
 
 func TestFirefox__findSqliteDB(t *testing.T) {

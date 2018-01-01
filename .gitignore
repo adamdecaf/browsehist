@@ -24,4 +24,4 @@ _testmain.go
 *.prof
 
 # Test files
-testdata/places.sqlite-*
+browser/*/testdata/places.sqlite-*

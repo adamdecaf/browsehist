@@ -6,9 +6,7 @@ import (
 
 func init() {
 	// Sneak in and change where we're searching for places.sqlite files
-	historyFilepaths = []string{
-		"../../testdata/History",
-	}
+	historyFilepaths = []string{"testdata/History"}
 }
 
 func TestChrome__findSqliteDB(t *testing.T) {
