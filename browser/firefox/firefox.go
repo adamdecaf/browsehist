@@ -16,7 +16,7 @@ var (
 	home = os.Getenv("HOME")
 
 	placesFilepaths = []string{
-		filepath.Join(home, `/Library/Application\ Support/Firefox/Profiles/rrdlhe7o.default/places.sqlite`), // OSX
+		filepath.Join(home, `/Library/Application Support/Firefox/Profiles/rrdlhe7o.default/places.sqlite`), // OSX
 	}
 )
 
