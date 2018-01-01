@@ -5,7 +5,7 @@ os:
   - osx
 
 go:
-  - 1.9
+  - 1.9.x
   - master
 
 osx_image: xcode9.1
