@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/adamdecaf/browsehist"
 	"github.com/adamdecaf/browsehist/browser"
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -34,11 +33,14 @@ var (
 // Docs
 // - https://digital-forensics.sans.org/blog/2010/01/21/google-chrome-forensics/
 
-type Chrome struct {
-	browser.Browser
+func List() ([]*browser.HistoryItem, error) {
+	var c Chrome
+	return c.List()
 }
 
-func (c Chrome) List() ([]*browsehist.HistoryItem, error) {
+type Chrome struct{}
+
+func (c Chrome) List() ([]*browser.HistoryItem, error) {
 	where, err := c.findHistoryDB()
 	if err != nil {
 		return nil, err
@@ -56,14 +58,14 @@ func (c Chrome) List() ([]*browsehist.HistoryItem, error) {
 	return c.readHistoryItems(db)
 }
 
-func (c Chrome) readHistoryItems(db *sql.DB) ([]*browsehist.HistoryItem, error) {
+func (c Chrome) readHistoryItems(db *sql.DB) ([]*browser.HistoryItem, error) {
 	rows, err := db.Query(`select url,last_visit_time from urls where last_visit_time is not null;`)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	out := make([]*browsehist.HistoryItem, 0)
+	out := make([]*browser.HistoryItem, 0)
 	for rows.Next() {
 		var where string // url
 		var when int64   // last_visit_time
@@ -84,7 +86,7 @@ func (c Chrome) readHistoryItems(db *sql.DB) ([]*browsehist.HistoryItem, error) 
 	return out, nil
 }
 
-func (c Chrome) parse(where string, when int64) (*browsehist.HistoryItem, error) {
+func (c Chrome) parse(where string, when int64) (*browser.HistoryItem, error) {
 	u, err := url.Parse(where)
 	if err != nil {
 		return nil, err
@@ -94,7 +96,7 @@ func (c Chrome) parse(where string, when int64) (*browsehist.HistoryItem, error)
 	// https://digital-forensics.sans.org/blog/2010/01/21/google-chrome-forensics/
 	t := time.Date(1601, time.January, 1, 0, 0, int(when/1e6), 0, time.UTC)
 
-	return &browsehist.HistoryItem{
+	return &browser.HistoryItem{
 		Address:    *u,
 		AccessTime: t,
 	}, nil

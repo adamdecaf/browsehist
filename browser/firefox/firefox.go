@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/adamdecaf/browsehist"
 	"github.com/adamdecaf/browsehist/browser"
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -21,11 +20,14 @@ var (
 	}
 )
 
-type Firefox struct {
-	browser.Browser
+func List() ([]*browser.HistoryItem, error) {
+	var f Firefox
+	return f.List()
 }
 
-func (ff Firefox) List() ([]*browsehist.HistoryItem, error) {
+type Firefox struct{}
+
+func (ff Firefox) List() ([]*browser.HistoryItem, error) {
 	where, err := ff.findPlacesDB()
 	if err != nil {
 		return nil, err
@@ -44,14 +46,14 @@ func (ff Firefox) List() ([]*browsehist.HistoryItem, error) {
 	return ff.readHistoryItems(db)
 }
 
-func (ff Firefox) readHistoryItems(db *sql.DB) ([]*browsehist.HistoryItem, error) {
+func (ff Firefox) readHistoryItems(db *sql.DB) ([]*browser.HistoryItem, error) {
 	rows, err := db.Query(`select url, last_visit_date from moz_places where last_visit_date is not null;`)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	out := make([]*browsehist.HistoryItem, 0)
+	out := make([]*browser.HistoryItem, 0)
 	for rows.Next() {
 		var where string // url
 		var when int64   // last_visit_date
@@ -72,13 +74,13 @@ func (ff Firefox) readHistoryItems(db *sql.DB) ([]*browsehist.HistoryItem, error
 	return out, nil
 }
 
-func (ff Firefox) parse(where string, when int64) (*browsehist.HistoryItem, error) {
+func (ff Firefox) parse(where string, when int64) (*browser.HistoryItem, error) {
 	u, err := url.Parse(where)
 	if err != nil {
 		return nil, err
 	}
 	t := time.Unix(int64(when/1e6), 0).UTC() // throw away nsec
-	return &browsehist.HistoryItem{
+	return &browser.HistoryItem{
 		Address:    *u,
 		AccessTime: t,
 	}, nil

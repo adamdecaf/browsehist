@@ -1,10 +1,20 @@
 package browser
 
 import (
-	"github.com/adamdecaf/browsehist"
+	"net/url"
+	"time"
 )
 
 type Browser interface {
 	// List returns the given history items from a browser
-	List() ([]*browsehist.HistoryItem, error)
+	List() ([]*HistoryItem, error)
+}
+
+type History struct {
+	Items []HistoryItem
+}
+
+type HistoryItem struct {
+	Address    url.URL
+	AccessTime time.Time
 }
